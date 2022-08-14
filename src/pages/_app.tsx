@@ -1,4 +1,5 @@
 import { withTRPC } from "@trpc/next";
+import { createWSClient, wsLink } from "@trpc/client/links/wsLink";
 import "../styles/globals.css";
 import { AppRouter } from "./api/trpc/[trpc]";
 
@@ -25,6 +26,15 @@ export default withTRPC<AppRouter>({
   config({ ctx }) {
     return {
       url: `${getBaseUrl()}/api/trpc`,
+      links: [
+        typeof window !== "undefined"
+          ? wsLink({
+              client: createWSClient({
+                url: `ws://localhost:3001`,
+              }),
+            })
+          : () => {},
+      ],
     };
   },
   ssr: true,

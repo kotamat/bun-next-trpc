@@ -30,7 +30,7 @@ export default withTRPC<AppRouter>({
         typeof window !== "undefined"
           ? wsLink({
               client: createWSClient({
-                url: `ws://localhost:3001`,
+                url: `ws://${getBaseUrl()}:3001`,
               }),
             })
           : () => {},
